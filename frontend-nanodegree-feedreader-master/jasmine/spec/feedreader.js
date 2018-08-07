@@ -21,11 +21,10 @@ $(function() {
          * allFeeds in app.js to be an empty array and refresh the
          * page?
          */
-        it('are defined', function() {
+        it('allFeeds variable is defined', function() {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
-
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a URL defined
@@ -36,8 +35,7 @@ $(function() {
                 expect(feed.url).toBeDefined();
                 expect(feed.url.length).not.toBe(0);
             }
-        });
-        
+        });  
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
@@ -49,6 +47,7 @@ $(function() {
                 expect(feed.name.length).not.toBe(0);
             }
         });
+        
         /* TODO: Write a new test suite named "The menu" */
 
         /* TODO: Write a test that ensures the menu element is
@@ -78,7 +77,6 @@ $(function() {
             menuIcon.click();
             expect(menu.classList.contains('menu-hidden')).toBe(true);
         });
-
         /* TODO: Write a new test suite named "Initial Entries" */
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
@@ -96,33 +94,31 @@ $(function() {
             const entries = document.querySelector('.feed');
             expect(entries.children.length > 0).toBe(true);
         });
+
          /* TODO: Write a new test suite named "New Feed Selection" */
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+    })})})})
     describe('New Feed Selection', function() {
-        const feed = document.querySelector('.feed');
-        const feedOne = [];
+        let initURL;
+        let nextURL;
 
         beforeEach(function(done) {
-            loadFeed(0);
-            Array.from(feed.children).forEach(function(entries) {
-                feedOne.push(entries.innerText);
+            const feed = document.querySelector('.feed');
+            loadFeed(0, function() {
+                initURL = document.querySelector('.entry-link');
+                loadFeed(1, function() {
+                nextURL = document.querySelector('.entry-link');
+                //From Udacity Classroom: "Callbacks should be used to ensure that feeds are loaded by 
+                //the _loadFeed_ function that the content actually changes."
+                done();
+                });
             });
-            loadFeed(1,done);
         });
-
-        it('content actually changes', function() {
-           Array.from(feed.children).forEach(function(entries, index) {
-
-            expect(entries.innerText === feedOne[index]).toBe(false);
+        it('content  has actually changed', function() {
+            expect(initURL === nextURL).toBe(false);
         });
-
-        })
-        
-        })
-    });  
-   
-}())})})
+    })();
